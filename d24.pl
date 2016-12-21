@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Advent of Code 2015 Day 24 - part 1 / part 2 / complete solution
+# Advent of Code 2015 Day 24 - complete solution
 # Problem link: http://adventofcode.com/2015/day/24
 #   Discussion: http://gerikson.com/blog/comp/Advent-of-Code-2015.html#d24
 #      License: http://gerikson.com/files/AoC2015/UNLICENSE
