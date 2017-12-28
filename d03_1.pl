@@ -23,13 +23,13 @@ close F;
 my @next=(0,0);
 foreach my $dir (@dirs) {
 
-    if ( $dir =~ m/\^/) {  # north
+    if ( $dir eq '^') {  # north
 	$next[1] = $start[1]+1 
-    } elsif ( $dir =~ m/\>/) { # east
+    } elsif ( $dir eq '>') { # east
 	$next[0] = $start[0]+1
-    } elsif ( $dir =~ m/v/ ) { # south
+    } elsif ( $dir eq 'v' ) { # south
 	$next[1] = $start[1]-1
-    } elsif ( $dir =~ m/\</) { #west
+    } elsif ( $dir eq '<') { #west
 	$next[0] = $start[0]-1
     } else {
 	die "can't recognise dir: $dir\n"

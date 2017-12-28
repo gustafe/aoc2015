@@ -11,13 +11,13 @@ use warnings;
 sub move {
     my ($x,$y,$d) = @_;
 
-    if ( $d =~ m/\^/) {  # north
+    if ( $d eq '^') {  # north
 	$y++
-    } elsif ( $d =~ m/\>/) { # east
+    } elsif ( $d eq '>') { # east
 	$x++
-    } elsif ( $d =~ m/v/ ) { # south
+    } elsif ( $d eq 'v' ) { # south
 	$y--
-    } elsif ( $d =~ m/\</) { #west
+    } elsif ( $d eq '<') { #west
 	$x--
     } else {
 	die "can't recognise dir: $d\n"
