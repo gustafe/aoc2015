@@ -1,28 +1,32 @@
-#!/usr/bin/perl
+#! /usr/bin/env perl
 # Advent of Code 2015 Day 16 - complete solution
 # Problem link: http://adventofcode.com/2015/day/16
 #   Discussion: http://gerikson.com/blog/comp/Advent-of-Code-2015.html#d16
 #      License: http://gerikson.com/files/AoC2015/UNLICENSE
 ###########################################################
-
-use strict;
+use 5.016;
 use warnings;
+use autodie;
+
+#### INIT - load input data from file into array
 my $testing = 0;
+my @input;
 my $file = $testing ? 'test.txt' : 'input.txt';
-open F, "<$file" or die "can't open file: $!\n";
+open( my $fh, '<', "$file" );
+while (<$fh>) { chomp; s/\r//gm; push @input, $_; }
+
+### CODE
+my $part2 = shift || 0;
 my %aunts;
-while (<F>) {
-    chomp;
-    s/\r//gm;
-    my ( $aunt, $props ) = ( $_ =~ m/^(Sue \d+): (.*)$/ );
-    my @properties = split( /,/, $props );
-    while (@properties) {
-        my $property = shift @properties;
-        my ( $key, $val ) = ( $property =~ m/(\S+)\: (\d+)/ );
-        $aunts{$aunt}->{$key} = $val;
+
+while (@input) {
+    my $line = shift @input;
+    my ( $aunt, $props ) = ( $line =~ m/^Sue (\d+): (.*)$/ );
+    foreach my $p ( split( /,/, $props ) ) {
+        my ( $k, $v ) = ( $p =~ m/(\S+)\: (\d+)/ );
+        $aunts{$aunt}->{$k} = $v;
     }
 }
-close F;
 
 my %clues;
 while (<DATA>) {
@@ -30,23 +34,34 @@ while (<DATA>) {
     my ( $key, $val ) = ( $_ =~ /^(\S+)\: (\d+)$/ );
     $clues{$key} = $val;
 }
-
+my %scores;
 foreach my $aunt ( keys %aunts ) {
     my $score      = 0;
     my %properties = %{ $aunts{$aunt} };
     foreach my $clue ( keys %clues ) {
         if ( exists $properties{$clue} ) {
-            if ( $clue eq 'cats' or $clue eq 'trees' ) {
+            if ( $part2 and ( $clue eq 'cats' or $clue eq 'trees' ) ) {
                 $score++ if $properties{$clue} > $clues{$clue};
-            } elsif ( $clue eq 'goldfish' or $clue eq 'pomeranians' ) {
+            }
+            elsif ( $part2
+                and ( $clue eq 'goldfish' or $clue eq 'pomeranians' ) )
+            {
                 $score++ if $properties{$clue} < $clues{$clue};
-            } else {
+            }
+            else {
                 $score++ if $properties{$clue} == $clues{$clue};
             }
         }
     }
-    print "$score $aunt\n";
+    $scores{$aunt} = $score;
+
+    #    print "$score $aunt\n";
 }
+
+my $winner = ( sort { $scores{$b} <=> $scores{$a} } keys %scores )[0];
+
+say $part2? '2' : '1', ". ", $part2 ? 'real' : '',
+  " Aunt Sue is nr $winner with score $scores{$winner}";
 
 __DATA__
 children: 3
