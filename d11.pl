@@ -1,12 +1,23 @@
-#!/usr/bin/perl
+#! /usr/bin/env perl
 # Advent of Code 2015 Day 11 - complete solution
 # Problem link: http://adventofcode.com/2015/day/11
 #   Discussion: http://gerikson.com/blog/comp/Advent-of-Code-2015.html#d11
 #      License: http://gerikson.com/files/AoC2015/UNLICENSE
 ###########################################################
 
-use strict;
+use 5.016;
 use warnings;
+use autodie;
+
+#### INIT - load input data from file into array
+my $testing = 0;
+my @input;
+my $file = $testing ? 'test.txt' : 'input.txt';
+open( my $fh, '<', "$file" );
+while (<$fh>) { chomp; s/\r//gm; push @input, $_; }
+
+### CODE
+my $in = shift @input;
 
 sub is_valid {    # used to fine-tune against example data
     my ($p) = @_;
@@ -17,9 +28,9 @@ sub is_valid {    # used to fine-tune against example data
     my $pwd = 0;
     my @p = split( //, $p );
     for ( my $i = 0 ; $i < scalar @p - 3 ; $i++ ) {
-        if (     ord( $p[$i] ) + 1 == ord( $p[ $i + 1 ] )
-             and ord( $p[$i] ) + 2 == ord( $p[ $i + 2 ] )
-             and ord( $p[ $i + 1 ] ) + 1 == ord( $p[ $i + 2 ] ) )
+        if (    ord( $p[$i] ) + 1 == ord( $p[ $i + 1 ] )
+            and ord( $p[$i] ) + 2 == ord( $p[ $i + 2 ] )
+            and ord( $p[ $i + 1 ] ) + 1 == ord( $p[ $i + 2 ] ) )
         {
             $pwd = $p;
             next;
@@ -36,12 +47,12 @@ sub next_char {
     return chr($next);
 }
 
-my $in    = 'hxbxwxba';
-my @pwd   = split( //, $in );
-my $notch = 0
-    ;  # see this as an odometer where a wheel turns over when this is engaged
-my $valid = 0;
-while ( !$valid ) {
+my @pwd = split( //, $in );
+
+# see this as an odometer where a wheel turns over when this is engaged
+my $notch = 0;
+my @valid = ();
+while ( scalar @valid < 2 ) {
     my $next = next_char( $pwd[$#pwd] );
     $pwd[$#pwd] = $next;
     if ( $next eq 'a' ) { $notch = $#pwd - 1 }
@@ -56,8 +67,10 @@ while ( !$valid ) {
 
     # is this a candidate for further checks?
     if ( join( '', @pwd ) =~ m/(.)\1.*?(.)\2/g and $1 ne $2 ) {
-        $valid = is_valid( join( '', @pwd ) );
+        my $v = is_valid( join( '', @pwd ) );
+        push @valid, $v if $v;
     }
 }
-print "New password: $valid\n";
-
+for my $i ( 0, 1 ) {
+    say 'Valid password #', $i+1,': ', $valid[$i];
+}
