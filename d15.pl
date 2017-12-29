@@ -4,23 +4,19 @@
 #   Discussion: http://gerikson.com/blog/comp/Advent-of-Code-2015.html#d15
 #      License: http://gerikson.com/files/AoC2015/UNLICENSE
 ###########################################################
-
-# Part 1, uncomment 1 line for part 2
-# generates a list of results, pipe through sort -n to find what you want
-
 use strict;
 use warnings;
 
 my %data;
+my $part2 = shift || 0;
 my $file = 'input.txt';
 open F, "<$file" or die "can't open file: $!\n";
 while (<F>) {
     chomp;
     s/\r//gm;
-    my ( $ingr, $cap, $dur, $flv, $tex, $cal )
-        = ( $_
-         =~ m/^(\S+): .* (-?\d+),.* (-?\d+),.* (-?\d+),.* (-?\d+),.* (-?\d+)$/
-        );
+    my ( $ingr, $cap, $dur, $flv, $tex, $cal ) =
+      ( $_ =~
+          m/^(\S+): .* (-?\d+),.* (-?\d+),.* (-?\d+),.* (-?\d+),.* (-?\d+)$/ );
 
     # each property gets an arrayref representing the ingredients
     push @{ $data{'cap'} }, $cap;
@@ -41,7 +37,7 @@ foreach my $a ( 1 .. 100 ) {
         }
     }
 }
-
+my %scores;
 foreach my $proportion (@proportions) {
     my $cookie_score  = 1;
     my $calorie_count = 0;
@@ -51,17 +47,22 @@ foreach my $proportion (@proportions) {
             my $val = $proportion->[$idx] * ( $data{$property}->[$idx] );
             if ( $property eq 'cal' ) {
                 $calorie_count += $val;
-            } else {
+            }
+            else {
                 $property_score += $val;
             }
         }
         if ( $property_score < 1 ) { $property_score = 0 }
         $cookie_score *= $property_score unless $property eq 'cal';
     }
-
-    # uncomment next line for part 2
-    # next unless $calorie_count == 500;
-    print "$cookie_score $calorie_count ", join( ' ', @{$proportion} ), "\n"
-        unless $cookie_score == 0;
+    if ($part2) {
+        next unless $calorie_count == 500;
+    }
+    $scores{ join( ',', @$proportion ) } =
+      { score => $cookie_score, cals => $calorie_count };
 }
+
+my $win =
+  ( sort { $scores{$b}->{score} <=> $scores{$a}->{score} } keys %scores )[0];
+print $part2? '2' : '1', ". winning score: ", $scores{$win}->{score}, "\n";
 
