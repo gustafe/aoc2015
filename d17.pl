@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Advent of Code 2015 Day 17 - complete solution
-# Problem link: http://adventofcode.com/2015/day/17.pl
+# Problem link: http://adventofcode.com/2015/day/17
 #   Discussion: http://gerikson.com/blog/comp/Advent-of-Code-2015.html#d17
 #      License: http://gerikson.com/files/AoC2015/UNLICENSE
 ###########################################################
