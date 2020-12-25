@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
 # Advent of Code 2015 Day 19 - part 2 alternative solution
 # Problem link: http://adventofcode.com/2015/day/19
-#   Discussion: http://gerikson.com/blog/comp/Advent-of-Code-2015.html#d19
+#   Discussion: http://gerikson.com/blog/comp/adventofcode/Advent-of-Code-2015.html#d19
 #      License: http://gerikson.com/files/AoC2015/UNLICENSE
 ###########################################################
 

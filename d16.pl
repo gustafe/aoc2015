@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
 # Advent of Code 2015 Day 16 - complete solution
 # Problem link: http://adventofcode.com/2015/day/16
-#   Discussion: http://gerikson.com/blog/comp/Advent-of-Code-2015.html#d16
+#   Discussion: http://gerikson.com/blog/comp/adventofcode/Advent-of-Code-2015.html#d16
 #      License: http://gerikson.com/files/AoC2015/UNLICENSE
 ###########################################################
 use 5.016;
